@@ -28,9 +28,21 @@ view: person {
                when  ${specialty_code} = 'CI' then 'Critical Illness'
                else 'Unknown'
          end;;
-
+    order_by_field: Product_type_id
   }
-
+  dimension: Product_type_id  {
+    type: number
+    sql:case  when ${specialty_code} = 'NP' then 1
+               when ${specialty_code} = 'PA' then 2
+               when  ${specialty_code} = 'TF' then 3
+               when  ${specialty_code} = 'IP' then 4
+               when  ${specialty_code} = 'PD' then 5
+               when  ${specialty_code} = 'SS' then 6
+               when  ${specialty_code} = 'IA' then 7
+               when  ${specialty_code} = 'CI' then 8
+                when  ${specialty_code} 'Unknown' then 9
+         end;;
+  }
 
   dimension: source_system{
     type: string
@@ -39,6 +51,16 @@ view: person {
                when ${geography} = 'V' then 'VRPS'
               else 'Unknown'
 
+         end;;
+    order_by_field: source_system_id
+    }
+
+  dimension: source_system_id{
+    type: string
+    sql: case  when ${geography} = 'A' then 1
+               when ${geography} = 'P' then 2
+               when ${geography} = 'V' then 3
+               when ${geography} = 'Unknown' then 4
          end;;
 
     }
@@ -55,6 +77,7 @@ view: person {
                 when (${age} >= 65 and ${age} <= 69) then '65-69'
                 when (${age} >= 70 and ${age} <= 74) then  '70-74'
                 else '75 +' end;;
+    order_by_field: age_band_id
   }
   dimension: age_band_id  {
     type: number

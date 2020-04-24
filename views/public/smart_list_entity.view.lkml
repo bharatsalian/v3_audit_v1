@@ -20,24 +20,78 @@ view: smart_list_entity {
     allowed_value: { label: "Benefit Type"
                      value: "benefit" }
     allowed_value: { label: "Region "
-      value: "region" }
+                     value: "region" }
     allowed_value: { label: "Source System "
-      value: "source" }
+                     value: "source" }
   }
   dimension: campaign_column {
     type: string
+    label_from_parameter: campaign_group
     sql:
-    {% if campaign_group._parameter_value == 'age' %}
-      ${person.age_band}
-    {% elsif campaign_group._parameter_value == 'benefit' %}
-      ${person.Product_type}
-    {% elsif campaign_group._parameter_value == 'region' %}
-      ${addresses.region}
-    {% elsif campaign_group._parameter_value == 'source' %}
-      ${person.source_system}
-    {% endif %};;
+        CASE
+      WHEN {% parameter campaign_group %} = 'age'
+        THEN ${person.age_band}
+      WHEN {% parameter campaign_group %} = 'benefit'
+        THEN ${person.Product_type}
+      WHEN {% parameter campaign_group %} = 'region'
+        THEN ${addresses.region}
+      WHEN {% parameter campaign_group %} = 'source'
+        THEN  ${person.source_system}
+      ELSE NULL
+    END;;
+    link: {
+      label: "{% if campaign_group._parameter_value == \"'region'\" %}
+    Region Drill down Look
+    {% endif %}"
+      url:
+      "
+      {% if campaign_group._parameter_value == \"'region'\" %}
+      /looks/11?&f[addresses.region]={{ value }}
+      {% endif %}
+      "
+    }
+
+
+#    link: {
+#    {% if campaign_group._parameter_value == 'age' %}
+#      label: "State Drill down Look"
+#      url:"/looks/11?&f[addresses.region]={{ value }}"
+#    {% elsif campaign_group._parameter_value == 'benefit' %}
+#     label: "State Drill down Look"
+#      url:"/looks/11?&f[addresses.region]={{ value }}"
+#    #{% elsif campaign_group._parameter_value == 'benefit' %}
+#     # ${addresses.region}
+#    #{% elsif campaign_group._parameter_value == 'benefit' %}
+#     # ${person.source_system}
+#    {% endif %};;
+#    }
   }
 
+  dimension: campaign_column_id {
+    type: number
+    sql:
+        CASE
+      WHEN {% parameter campaign_group %} = 'age'
+        THEN ${person.age_band_id}::VARCHAR
+      WHEN {% parameter campaign_group %} = 'benefit'
+        THEN ${person.Product_type_id}::VARCHAR
+      WHEN {% parameter campaign_group %} = 'region'
+        THEN ${addresses.region_id}::VARCHAR
+      WHEN {% parameter campaign_group %} = 'source'
+        THEN ${person.source_system_id}::VARCHAR
+      ELSE NULL
+    END ;;
+
+   # {% if campaign_group._parameter_value == 'age' %}
+    #  ${person.age_band}
+    #{% elsif campaign_group._parameter_value == 'benefit' %}
+     # ${person.Product_type}
+    #{% elsif campaign_group._parameter_value == 'benefit' %}
+     # ${addresses.region}
+    #{% elsif campaign_group._parameter_value == 'benefit' %}
+     # ${person.source_system}
+    #{% endif %};;
+    }
   dimension_group: added {
     type: time
     timeframes: [

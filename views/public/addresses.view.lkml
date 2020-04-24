@@ -30,10 +30,19 @@ view: addresses {
             else  'Unknown'
             end ;;
     #drill_fields: [state]
-   link: {
+    link: {
       label: "State Drill down Look"
-     url:"/looks/11?&f[addresses.region]={{ value }}"
-   }
+      url:"/looks/11?&f[addresses.region]={{ value }}"
+    }
+  }
+  dimension: region_id  {
+    type: number
+    sql:case  when ${region} = 'Northeast' then 1
+               when ${region} = 'Midwest' then 2
+               when  ${region} = 'South' then 3
+               when  ${region} = 'West' then 4
+               when  ${region} = 'Unknown' then 5
+         end;;
   }
 
   dimension: address_3 {
