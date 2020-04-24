@@ -13,6 +13,31 @@ view: smart_list_entity {
     sql: ${TABLE}.added_by ;;
   }
 
+  parameter: campaign_group {
+    type: string
+    allowed_value: { label: "Age Band"
+                     value: "age" }
+    allowed_value: { label: "Benefit Type"
+                     value: "benefit" }
+    allowed_value: { label: "Region "
+      value: "region" }
+    allowed_value: { label: "Source System "
+      value: "source" }
+  }
+  dimension: campaign_column {
+    type: string
+    sql:
+    {% if campaign_group._parameter_value == 'age' %}
+      ${person.age_band}
+    {% elsif campaign_group._parameter_value == 'benefit' %}
+      ${person.Product_type}
+    {% elsif campaign_group._parameter_value == 'region' %}
+      ${addresses.region}
+    {% elsif campaign_group._parameter_value == 'source' %}
+      ${person.source_system}
+    {% endif %};;
+  }
+
   dimension_group: added {
     type: time
     timeframes: [

@@ -31,6 +31,7 @@ view: person {
 
   }
 
+
   dimension: source_system{
     type: string
     sql: case  when ${geography} = 'A' then 'ACE'
