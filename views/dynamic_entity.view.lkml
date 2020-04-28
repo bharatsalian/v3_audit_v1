@@ -102,7 +102,7 @@ view: dynamic_entity {
 
 
       dimension: modified_user {
-        label: "Mosidied User"
+        label: "Modified User"
         type: string
         sql: coalesce(${TABLE}.updated_by,${TABLE}.inserted_by) ;;
       }
