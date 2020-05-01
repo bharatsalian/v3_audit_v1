@@ -1,5 +1,5 @@
 view: dynamic_entity {
-  label: "V3 Auidt"
+  label: "V3 Audit"
   derived_table: {
     sql: SELECT  {% if table_name._parameter_value == "addresses" %} address_id
                   {% elsif table_name._parameter_value == "billing_entity" %} billing_id
@@ -139,10 +139,46 @@ view: dynamic_entity {
         ]
         sql: coalesce(${TABLE}.updated_date,${TABLE}.inserted_date) ;;
       }
+
+
+   measure: count_table {
+     type: number
+     sql:
+     {% if table_name._parameter_value == 'addresses' %}
+       ${addresses.count}
+     {% elsif table_name._parameter_value == 'person' %}
+       ${person.count}
+     {% else %}
+       ${dynamic_entity.count}
+    {% endif %};;
+    link: {
+      label:"{% if table_name._parameter_value == 'addresses' %}Address Drill Down{% elsif table_name._parameter_value == 'person' %}Person Drill Down{% else %}Drill Down{% endif %}"
+      url: "{% if table_name._parameter_value == 'addresses' %}
+      {{addresses.count._link}}
+      {% elsif table_name._parameter_value == 'person' %}
+      {{person.count._link}}
+      {% else %}
+      {{dynamic_entity.count._link}}
+      {% endif %}"
+    }
+
+    html:<a href =#drillmenu class='Cell-Clickable-content' target='_self'
+           {% if table_name._parameter_value == 'addresses' %}
+             {{addresses.count._rendered_value}}
+           {% elsif table_name._parameter_value == 'person' %}
+              {{person.count._rendered_value}}
+           {% else %}
+              {{dynamic_entity.count._rendered_value}}
+          {% endif %}
+          </a>;;
+  }
+
+
       measure: count {
         type: count
         drill_fields: [detail*]
       }
+
 
 
       set: detail {

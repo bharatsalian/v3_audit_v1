@@ -25,8 +25,14 @@ explore: dynamic_entity {
 
   join: addresses {
     type: left_outer
-    relationship: one_to_many
+    relationship: one_to_one
     sql_on: ${dynamic_entity.id} = ${addresses.address_id} ;;
+  }
+
+  join: person {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${dynamic_entity.id} = ${person.person_id} ;;
   }
 
 }

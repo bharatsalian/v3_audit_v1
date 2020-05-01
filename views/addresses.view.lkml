@@ -369,6 +369,23 @@ view: addresses {
 
   measure: count {
     type: count
-    drill_fields: [ref_address_id]
+    drill_fields: [address_id,
+entity_id,
+key_value,
+address_type,
+address_period,
+start_date,
+season_stop_date,
+stop_date,
+ref_address_id,
+address_1,
+address_2,
+address_3,
+city,
+state,
+zip,
+country,
+postal_code
+]
   }
 }
