@@ -34,5 +34,20 @@ explore: dynamic_entity {
     relationship: one_to_one
     sql_on: ${dynamic_entity.id} = ${person.person_id} ;;
   }
+  join: employer {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${dynamic_entity.id} = ${employer.employer_id} ;;
+  }
+  join: contact_info {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${dynamic_entity.id} = ${contact_info.contact_info_id} ;;
+  }
+  join: dependent {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${dynamic_entity.id} = ${dependent.dependent_id} ;;
+  }
 
 }

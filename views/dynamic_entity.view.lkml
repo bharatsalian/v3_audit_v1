@@ -33,25 +33,29 @@ view: dynamic_entity {
         label: "Dependent"
         value: "dependent"
       }
-      allowed_value: {
-        label: "Disbursement"
-        value: "disbursement"
-      }
-      allowed_value: {
-        label: "Disbursement request"
-        value: "Disbursement_request"
-      }
+#      allowed_value: {
+#        label: "Disbursement"
+#        value: "disbursement"
+#      }
+#     allowed_value: {
+#        label: "Disbursement request"
+#        value: "Disbursement_request"
+#      }
       allowed_value: {
         label: "Employer"
         value: "employer"
       }
+#      allowed_value: {
+#        label: "Enrollment"
+#        value: "enrollment"
+#      }
+#      allowed_value: {
+#        label: "Enrollment Coverage"
+#        value: "enrollment_coverage"
+#      }
       allowed_value: {
-        label: "Enrollment"
-        value: "enrollment"
-      }
-      allowed_value: {
-        label: "Enrollment Coverage"
-        value: "enrollment_coverage"
+        label: "Employer"
+        value: "employer"
       }
       allowed_value: {
         label: "Person"
@@ -148,15 +152,28 @@ view: dynamic_entity {
        ${addresses.count}
      {% elsif table_name._parameter_value == 'person' %}
        ${person.count}
+     {% elsif table_name._parameter_value == 'employer' %}
+      ${employer.count}
+     {% elsif table_name._parameter_value == 'contact_info' %}
+      ${contact_info.count}
+     {% elsif table_name._parameter_value == 'dependent' %}
+      ${dependent.count}
      {% else %}
        ${dynamic_entity.count}
     {% endif %};;
     link: {
-      label:"{% if table_name._parameter_value == 'addresses' %}Address Drill Down{% elsif table_name._parameter_value == 'person' %}Person Drill Down{% else %}Drill Down{% endif %}"
+      #label:"{% if table_name._parameter_value == 'addresses' %}Address Drill Down{% elsif table_name._parameter_value == 'person' %}Person Drill Down{% elsif table_name._parameter_value == 'employer' %}Employer Drill Down{% else %}Drill Down{% endif %}"
+      label: "Detail Drill Down"
       url: "{% if table_name._parameter_value == 'addresses' %}
       {{addresses.count._link}}
       {% elsif table_name._parameter_value == 'person' %}
       {{person.count._link}}
+      {% elsif table_name._parameter_value == 'employer' %}
+      {{employer.count._link}}
+      {% elsif table_name._parameter_value == 'contact_info' %}
+      {{contact_info.count._link}}
+      {% elsif table_name._parameter_value == 'dependent' %}
+      {{dependent.count._link}}
       {% else %}
       {{dynamic_entity.count._link}}
       {% endif %}"
@@ -167,6 +184,12 @@ view: dynamic_entity {
              {{addresses.count._rendered_value}}
            {% elsif table_name._parameter_value == 'person' %}
               {{person.count._rendered_value}}
+           {% elsif table_name._parameter_value == 'employer' %}
+              {{employer.count._rendered_value}}
+           {% elsif table_name._parameter_value == 'contact_info' %}
+              {{employer.count._rendered_value}}
+           {% elsif table_name._parameter_value == 'dependent' %}
+              {{dependent.count._rendered_value}}
            {% else %}
               {{dynamic_entity.count._rendered_value}}
           {% endif %}
